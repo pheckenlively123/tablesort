@@ -31,7 +31,7 @@ func main() {
 	header := []string{"LastName", "FirstName", "Grade"}
 	roster = append(roster, header)
 
-	for grade := 0; grade <= int(opts.maxGrades); grade++ {
+	for grade := 1; grade <= int(opts.maxGrades); grade++ {
 
 		classSize := ng.randomNumberRange(opts.minClassSize, opts.maxClassSize)
 		for classmember := 0; classmember <= int(classSize); classmember++ {

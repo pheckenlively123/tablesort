@@ -127,7 +127,7 @@ type opts struct {
 
 func getOpts() opts {
 
-	maxTables := flag.Uint64("maxtables", 8, "Number of lunch tables")
+	maxTables := flag.Uint64("maxtables", 15, "Number of lunch tables")
 	inputCsv := flag.String("roster", "testroster.csv", "Input roster in CSV format.")
 	outputCsv := flag.String("tablelist", "tablelist.csv", "Table list in CSV format.")
 
