@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"time"
 )
 
 // Make a test roster for use in developing and testing tablesort.
@@ -32,9 +33,9 @@ func main() {
 
 	for grade := 0; grade <= int(opts.maxGrades); grade++ {
 
-		classSize := randomNumberRange(opts.minClassSize, opts.maxClassSize)
+		classSize := ng.randomNumberRange(opts.minClassSize, opts.maxClassSize)
 		for classmember := 0; classmember <= int(classSize); classmember++ {
-			lastName := pickLastName(families)
+			lastName := ng.pickLastName(families)
 			firstName := ng.makeName()
 			roster = append(roster, []string{
 				lastName,
@@ -59,29 +60,33 @@ func main() {
 	}
 }
 
-func pickLastName(families []string) string {
-	index := rand.Int63n(int64(len(families)))
-	return families[index]
-}
-
-func randomNumberRange(min uint64, max uint64) uint64 {
-	numLen := max - min
-	diffSize := rand.Int63n(int64(numLen + 1))
-	return min + uint64(diffSize)
-}
-
 type nameGenerator struct {
 	alphabet []byte
 	minLen   uint64
 	maxLen   uint64
+	rand     *rand.Rand
+}
+
+func (n *nameGenerator) pickLastName(families []string) string {
+	index := n.rand.Int63n(int64(len(families)))
+	return families[index]
+}
+
+func (n *nameGenerator) randomNumberRange(min uint64, max uint64) uint64 {
+	numLen := max - min
+	diffSize := n.rand.Int63n(int64(numLen + 1))
+	return min + uint64(diffSize)
 }
 
 func newNameGerator(minLen uint64, maxLen uint64) *nameGenerator {
+
+	randSrc := rand.NewSource(time.Now().UnixMicro())
 
 	rv := &nameGenerator{
 		alphabet: make([]byte, 0),
 		minLen:   minLen,
 		maxLen:   maxLen,
+		rand:     rand.New(randSrc),
 	}
 
 	for i := 65; i < 91; i++ {
@@ -97,11 +102,11 @@ func newNameGerator(minLen uint64, maxLen uint64) *nameGenerator {
 
 func (n *nameGenerator) makeName() string {
 
-	nameLen := randomNumberRange(n.minLen, n.maxLen)
+	nameLen := n.randomNumberRange(n.minLen, n.maxLen)
 
 	rv := make([]byte, 0)
 	for i := 0; i < int(nameLen); i++ {
-		charPos := rand.Int63n(int64(len(n.alphabet)))
+		charPos := n.rand.Int63n(int64(len(n.alphabet)))
 		rv = append(rv, n.alphabet[charPos])
 	}
 

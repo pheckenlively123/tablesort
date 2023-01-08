@@ -9,6 +9,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -51,6 +52,9 @@ func main() {
 			grade:     grade,
 		})
 	}
+
+	randSrc := rand.NewSource(time.Now().UnixMicro())
+	rand := rand.New(randSrc)
 
 	// Randomize the roster
 	rand.Shuffle(len(shuffleList), func(i, j int) {
