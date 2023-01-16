@@ -74,7 +74,14 @@ func main() {
 	// Now that we have assigned tables, sort the students by table,
 	// so the output is eaiser to use.
 	sort.Slice(shuffleList, func(i, j int) bool {
-		return shuffleList[i].table < shuffleList[j].table
+		switch {
+		case shuffleList[i].table == shuffleList[j].table && shuffleList[i].grade == shuffleList[j].grade:
+			return shuffleList[i].lastName < shuffleList[j].lastName
+		case shuffleList[i].table == shuffleList[j].table:
+			return shuffleList[i].grade < shuffleList[j].grade
+		default:
+			return shuffleList[i].table < shuffleList[j].table
+		}
 	})
 
 	// Write out the results, starting with the header
